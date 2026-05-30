@@ -35,7 +35,11 @@ git clone https://github.com/DemonicDiviner/Payment-Service-API
 cd payment-service
 
 # Создайте файл окружения из примера
+Linux:
 cp .env.example .env
+
+Windows:
+Copy-Item .env.example .env
 ```
 
 ### 2. Запуск проекта
