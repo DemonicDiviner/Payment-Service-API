@@ -32,7 +32,7 @@
 ```bash
 # Клонируйте репозиторий
 git clone https://github.com/DemonicDiviner/Payment-Service-API
-cd payment-service
+cd Payment-Service-API
 
 # Создайте файл окружения из примера
 Linux:
