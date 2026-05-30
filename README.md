@@ -29,8 +29,6 @@
 
 ### 1. Клонирование и настройка
 
-### 1. Клонирование и настройка
-
 ```bash
 # Клонируйте репозиторий
 git clone https://github.com/DemonicDiviner/Payment-Service-API
