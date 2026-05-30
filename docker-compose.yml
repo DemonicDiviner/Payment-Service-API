@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # База данных PostgreSQL
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_USER:-app_user}
+      POSTGRES_PASSWORD: ${DB_PASS:-app_password}
+      POSTGRES_DB: ${DB_NAME:-app_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"  # Для подключения из IDE/клиента
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-app_user} -d ${DB_NAME:-app_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Твое FastAPI приложение
+  web:
+    build: .
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - .:/app  # Hot-reload для разработки
+    ports:
+      - "8000:8000"
+    environment:
+      # Передаем переменные, которые читает твой config.py
+      - DB_USER=${DB_USER:-app_user}
+      - DB_PASS=${DB_PASS:-app_password}
+      - DB_HOST=db  # <-- Важно: внутри сети Docker имя сервиса = хост
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-app_db}
+      - SECRET_KEY=${SECRET_KEY:-dev_secret_key_change_in_prod}
+    depends_on:
+      db:
+        condition: service_healthy  # Ждем, пока БД будет готова
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
