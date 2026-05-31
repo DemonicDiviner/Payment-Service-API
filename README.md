@@ -111,7 +111,13 @@ docker compose exec web alembic upgrade head
 | `PUT` | `/admin/users/{id}` | Обновление данных пользователя |
 | `DELETE` | `/admin/users/{id}` | Удаление пользователя |
 
----
+### Как протестировать вебхук
+
+Эндпоинт `/webhook/payment` требует цифровую подпись в поле `signature`.
+
+#### Формула подписи:
+
+SHA256("{transaction_id}:{account_id}:{amount}:{SECRET_KEY}")
 
 ## Пример использования
 
